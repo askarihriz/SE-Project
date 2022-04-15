@@ -1,0 +1,15 @@
+export const homeObj3 = {
+    id: "signup",
+    lightBg: true,
+    lightText: false,
+    darkText: true,
+    topLine: "Join our team",
+    headline: "Creating an account is extremely easy",
+    description: "Get everything set up and ready in under 10 minutes. All you need to do is add your information and you're ready to go.",
+    buttonLabel: "Start Now",
+    imgStart: true,
+    Primary: false,
+    img: require("../../images/svg-3.svg").default,
+    alt: "papers",
+    whereto: "/signup",
+}
