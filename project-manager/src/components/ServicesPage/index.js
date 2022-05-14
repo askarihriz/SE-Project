@@ -44,7 +44,11 @@ const ServicePage = () => {
         <FormContent>
           <Form>
             <FormH1>Pick A Service</FormH1>
+            <FormButton to="/loan">Loan Application</FormButton>
+            <FormButton to="/transactions">Transfer Funds</FormButton>
+            <FormButton to="/complain">Register Complain</FormButton>
             <FormButton to="/projectUpdate">Project Update</FormButton>
+            <FormButton to="/cutomerDetails">Customer Details</FormButton>
           </Form>
         </FormContent>
       </FormWrap>

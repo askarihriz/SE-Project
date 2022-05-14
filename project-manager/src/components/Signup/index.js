@@ -118,8 +118,8 @@ const Signup = () => {
                 className="google"
                 clientId="428967125751-etpht3bss3jotmbohpf6qlg0rkbc9i8h.apps.googleusercontent.com"
                 buttonText="Login with Leader's Google Id"
-                onSuccess={() => {}}
-                onFailure={() => {}}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
                 cookiePolicy="single_host_origin"
               ></GoogleLogin>
             )}
