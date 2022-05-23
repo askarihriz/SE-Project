@@ -17,32 +17,13 @@ const db = mysql.createConnection({
 
 app.post("/sign-up", (req, res) => {
   const leaderEmail = req.body.leaderEmail;
-  const leaderName = req.body.leaderName;
-  const leaderId = req.body.leaderId;
   const projectTitle = req.body.projectTitle;
-  const member1 = req.body.member1;
-  const member2 = req.body.member2;
-  const member3 = req.body.member3;
-  const member1Id = req.body.member1Id;
-  const member2Id = req.body.member2Id;
-  const member3Id = req.body.member3Id;
+  const leaderName = req.body.leaderName;
   const password = req.body.password;
 
   db.query(
-    "Insert into team_info (leader_email, project_title,leader_name,leader_id,member1,id1,member2,id2,member3,id3,team_password) values (?,?,?,?,?,?,?,?,?,?,?)",
-    [
-      leaderEmail,
-      projectTitle,
-      leaderName,
-      leaderId,
-      member1,
-      member1Id,
-      member2,
-      member2Id,
-      member3,
-      member3Id,
-      password,
-    ],
+    "Insert into team_info (leader_email, project_title,leader_name,team_password) values (?,?,?,?)",
+    [leaderEmail, projectTitle, leaderName, password],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -58,6 +39,41 @@ app.post("/sign-up", (req, res) => {
             }
           }
         );
+      }
+    }
+  );
+});
+
+app.post("/add-member", (req, res) => {
+  const projectTitle = req.body.projectTitle;
+  const memberName = req.body.memberName;
+
+  db.query(
+    "Insert into project_members (project_title, member_name) values (?,?)",
+    [projectTitle, memberName],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/add-tasks", (req, res) => {
+  const leaderEmail = req.body.leaderEmail;
+  const projectTitle = req.body.projectTitle;
+  const task = req.body.task;
+
+  db.query(
+    "Insert into task_table (leader_email, project_title, task) values (?,?,?)",
+    [leaderEmail, projectTitle, task],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
       }
     }
   );
@@ -81,6 +97,32 @@ app.post("/signed-in-user", (req, res) => {
   db.query(
     `Select * from team_info where leader_email='${MyEmail}' and team_password='${MyPassword}'`,
     [MyEmail, MyPassword],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/project-title", (req, res) => {
+  db.query(
+    `Select project_title, leader_email from team_info where leader_email='${MyEmail}'`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/tasks", (req, res) => {
+  db.query(
+    `Select task from task_table where leader_email='${MyEmail}'`,
     (err, result) => {
       if (err) {
         console.log(err);

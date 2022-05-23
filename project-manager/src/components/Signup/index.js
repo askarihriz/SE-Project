@@ -10,25 +10,20 @@ import {
   FormInput,
   FormButton,
   Text,
-  Selector,
-  Option,
 } from "./SignupElements";
 import GoogleLogin from "react-google-login";
 import Axios from "axios";
 import "./GoogleButton.css";
 import "./SignupStyles.css";
+import source from "../../images/addButton.png";
 
 const Signup = () => {
   const [leaderEmail, setLeaderEmail] = useState("");
   const [leaderName, setLeaderName] = useState("");
   const [leaderId, setLeaderId] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
-  const [member1, setMember1] = useState("");
-  const [member2, setMember2] = useState("");
-  const [member3, setMember3] = useState("");
-  const [member1Id, setMember1Id] = useState("");
-  const [member2Id, setMember2Id] = useState("");
-  const [member3Id, setMember3Id] = useState("");
+  const [memberCount, setMemberCount] = useState([1]);
+  const [memberList, setMemberList] = useState([""]);
   const [password, setPassword] = useState("");
   const [whereto, setWhereto] = useState("/");
   const [imgSrc, setImgSrc] = useState("");
@@ -37,28 +32,15 @@ const Signup = () => {
     setProjectTitle(e.target.value);
   };
 
-  const updateMember1 = (e) => {
-    setMember1(e.target.value);
+  const updateMemberList = (e, key) => {
+    memberList[key] = e.target.value;
   };
 
-  const updateMember2 = (e) => {
-    setMember2(e.target.value);
-  };
-
-  const updateMember3 = (e) => {
-    setMember3(e.target.value);
-  };
-
-  const updateMember1Id = (e) => {
-    setMember1Id(e.target.value);
-  };
-
-  const updateMember2Id = (e) => {
-    setMember2Id(e.target.value);
-  };
-
-  const updateMember3Id = (e) => {
-    setMember3Id(e.target.value);
+  const updateMemberCount = () => {
+    const newMem = [1, ...memberCount];
+    setMemberCount(newMem);
+    memberList.push("");
+    console.log(memberList);
   };
 
   const updatePassword = (e) => {
@@ -66,26 +48,21 @@ const Signup = () => {
   };
 
   const addUserAccount = () => {
+    for (let i = 0; i < memberList.length; i++) {
+      Axios.post("http://localhost:3001/add-member", {
+        projectTitle: projectTitle,
+        memberName: memberList[i],
+      });
+    }
     Axios.post("http://localhost:3001/sign-up", {
       leaderEmail: leaderEmail,
       leaderName: leaderName,
       leaderId: leaderId,
       projectTitle: projectTitle,
-      member1: member1,
-      member2: member2,
-      member3: member3,
-      member1Id: member1Id,
-      member2Id: member2Id,
-      member3Id: member3Id,
       password: password,
     }).then(() => {
       Axios.get("http://localhost:3001/logged-user").then((result) => {
         console.log(result.data);
-        let arr;
-        arr = result.data;
-        arr.map((val, key) => {
-          console.log(val.team_password);
-        });
       });
       console.log("success !");
       setWhereto("/signup");
@@ -98,6 +75,17 @@ const Signup = () => {
     setLeaderEmail(response.profileObj.email);
     setLeaderName(response.profileObj.familyName);
     setLeaderId(response.profileObj.givenName);
+  };
+
+  const addMembers = () => {
+    return memberCount.map((val, key) => (
+      <div className="flex flex-col">
+        <FormLabel key={key} htmlFor="for">
+          Member
+        </FormLabel>
+        <FormInput type="text" onChange={(e) => updateMemberList(e, key)} />
+      </div>
+    ));
   };
 
   return (
@@ -129,30 +117,14 @@ const Signup = () => {
               value={projectTitle}
               onChange={updateProjectTitle}
             />
-            <FormLabel htmlFor="for">Member 1</FormLabel>
-            <FormInput type="text" value={member1} onChange={updateMember1} />
-            <FormLabel htmlFor="for">Member 1 Id</FormLabel>
-            <FormInput
-              type="text"
-              value={member1Id}
-              onChange={updateMember1Id}
-            />
-            <FormLabel htmlFor="for">Member 2</FormLabel>
-            <FormInput type="text" value={member2} onChange={updateMember2} />
-            <FormLabel htmlFor="for">Member 2 Id</FormLabel>
-            <FormInput
-              type="text"
-              value={member2Id}
-              onChange={updateMember2Id}
-            />
-            <FormLabel htmlFor="for">Member 3</FormLabel>
-            <FormInput type="text" value={member3} onChange={updateMember3} />
-            <FormLabel htmlFor="for">Member 3 Id</FormLabel>
-            <FormInput
-              type="text"
-              value={member3Id}
-              onChange={updateMember3Id}
-            />
+            {addMembers()}
+            <img
+              className="w-14 my-2 bg-black rounded-full mx-auto cursor-pointer"
+              src={source}
+              alt="Add Button"
+              onClick={updateMemberCount}
+            ></img>
+
             <FormLabel htmlFor="for">Team Password</FormLabel>
             <FormInput
               type="password"
