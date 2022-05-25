@@ -61,6 +61,23 @@ app.post("/add-member", (req, res) => {
   );
 });
 
+app.post("/remove-tasks", (req, res) => {
+  const task = req.body.task;
+  console.log(task);
+
+  db.query(
+    `delete from task_table where task='${task}'`,
+    [task],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.post("/add-tasks", (req, res) => {
   const leaderEmail = req.body.leaderEmail;
   const projectTitle = req.body.projectTitle;
@@ -87,6 +104,66 @@ app.get("/logged-user", (req, res) => {
       res.send(result);
     }
   });
+});
+
+app.get("/projects-info", (req, res) => {
+  db.query(`Select * from team_info`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/get-members", (req, res) => {
+  db.query(`select member_name from project_members`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/get-specific-members", (req, res) => {
+  const projectTitle = req.body.projectTitle;
+  db.query(
+    `select member_name from project_members where project_title='${projectTitle}'`,
+    [projectTitle],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/get-tasks", (req, res) => {
+  db.query(`select task from task_table`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/get-specific-tasks", (req, res) => {
+  const projectTitle = req.body.projectTitle;
+  db.query(
+    `select task from task_table where project_title='${projectTitle}'`,
+    [projectTitle],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
 });
 
 let MyEmail = "";

@@ -7,6 +7,7 @@ import Admin from "./pages/admin";
 import Services from "./pages/services";
 import customerDetails from "./pages/cutomerDetails";
 import projectUpdate from "./pages/projectUpdate";
+import details from "./pages/details";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/admin" component={Admin} exact></Route>
         <Route path="/services" component={Services} exact></Route>
         <Route path="/cutomerDetails" component={customerDetails} exact></Route>
+        <Route path="/details" component={details} exact></Route>
         <Route path="/projectUpdate" component={projectUpdate} exact></Route>
       </Switch>
     </Router>

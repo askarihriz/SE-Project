@@ -40,12 +40,13 @@ const ServicePage = () => {
   return (
     <Container>
       <FormWrap>
-        <Icon to="/">Projo</Icon>
+        <Icon to="/">Sign Out</Icon>
         <FormContent>
           <Form>
             <FormH1>Pick A Service</FormH1>
             <FormButton to="/cutomerDetails">Tasks</FormButton>
             <FormButton to="/projectUpdate">Project Update</FormButton>
+            <FormButton to="/details">Account Details</FormButton>
           </Form>
         </FormContent>
       </FormWrap>

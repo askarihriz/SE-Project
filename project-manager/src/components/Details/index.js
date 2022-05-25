@@ -12,39 +12,50 @@ import {
   Accounts,
   TextSection,
   Row,
-  FormButton,
-  EmptyDiv,
   Spacer,
-} from "./AdminPanelElements";
+  SmallSpacer,
+} from "./DetailsElements";
 import Axios from "axios";
 
-const AdminPanel = () => {
+const Details = () => {
   const [projectsInfo, setProjectsInfo] = useState([]);
   const [mem, setMem] = useState([]);
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/projects-info").then((result) => {
+    Axios.get("http://localhost:3001/project-title").then((result) => {
       setProjectsInfo(result.data);
       console.log(result.data);
+      let x;
+      projectsInfo.map((val, key) => {
+        x = val.project_title;
+      });
+      Axios.post("http://localhost:3001/get-specific-members", {
+        projectTitle: x,
+      }).then((result) => {
+        setMem(result.data);
+        console.log(result.data);
+        let x;
+        projectsInfo.map((val, key) => {
+          x = val.project_title;
+        });
+        Axios.post("http://localhost:3001/get-specific-tasks", {
+          projectTitle: x,
+        }).then((result) => {
+          setTasks(result.data);
+          console.log(result.data);
+        });
+      });
     });
-    Axios.get("http://localhost:3001/get-members").then((result) => {
-      setMem(result.data);
-      console.log(result.data);
-    });
-    Axios.get("http://localhost:3001/get-tasks").then((result) => {
-      setTasks(result.data);
-      console.log(result.data);
-    });
-  }, []);
+  }, [projectsInfo]);
 
   return (
     <Container>
       <FormWrap>
-        <Icon to="/">Sign Out</Icon>
+        <Icon to="/services">Projo</Icon>
         <FormContent>
           <Form>
-            <FormH1>All Projects</FormH1>
+            <FormH1>Account Details</FormH1>
             <Accounts>
               {projectsInfo.map((val, key) => (
                 <div
@@ -80,4 +91,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default Details;

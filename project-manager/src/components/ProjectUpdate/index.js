@@ -19,6 +19,16 @@ import axios from "axios";
 const ProjectUpdate = () => {
   const [summary, setSummary] = useState("");
   const [file, setFile] = useState("");
+  const [email, setEmail] = useState("askarihriz@gmail.com");
+  const [toEmail, setToEmail] = useState("askari.hassan888@gmail.com");
+  const [proj, setProj] = useState("");
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/project-title").then((result) => {
+      setProj(result.data);
+      console.log(result.data);
+    });
+  }, [proj]);
 
   const updateSummary = (e) => {
     setSummary(e.target.value);
@@ -43,36 +53,38 @@ const ProjectUpdate = () => {
     }
   };
 
-  //   function sendEmail() {
-  //     let data = {
-  //       to_email: toEmail,
-  //       email: email,
-  //       message: message,
-  //       user_id: userId,
-  //       to_name: toName,
-  //       name: name,
-  //       accountNo: accountNo,
-  //     };
-  //     emailjs
-  //       .send(
-  //         "service_r9655qf",
-  //         "template_j1wrtru",
-  //         data,
-  //         "user_XbYd9CbERMB6qt2SkaPpk"
-  //       )
-  //       .then((res) => {
-  //         console.log(res);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
+  function sendEmail() {
+    let x;
+    proj.map((val, key) => {
+      x = val.project_title;
+    });
+    let data = {
+      to_email: toEmail,
+      email: email,
+      name: x,
+      file: file,
+      summary: summary,
+    };
+    emailjs
+      .send(
+        "service_r9655qf",
+        "template_9yedhc8",
+        data,
+        "user_XbYd9CbERMB6qt2SkaPpk"
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  }
 
   const projectUpdate = () => {
-    console.log(file);
     Axios.put("http://localhost:3001/project-update", {
       summary: summary,
       file: file,
     }).then((result) => {
       console.log(result.status);
+      sendEmail();
     });
   };
 
@@ -88,7 +100,7 @@ const ProjectUpdate = () => {
               type="text"
               required
               value={summary}
-              onChange={(e: string) => updateSummary(e)}
+              onChange={(e) => updateSummary(e)}
             />
             <FormLabel htmlFor="for">PDF file Report</FormLabel>
 

@@ -56,7 +56,7 @@ const Signin = () => {
   return (
     <Container>
       <FormWrap>
-        <Icon to="/">Projo</Icon>
+        <Icon to="/">Sign out</Icon>
         <FormContent>
           <Form>
             <FormH1>Sign in to your account</FormH1>
