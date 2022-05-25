@@ -35,6 +35,10 @@ const CutomerDetails = () => {
         flag = true;
       }
     });
+    if (textValue === "") {
+      alert("Cannot add blank Task!");
+      return;
+    }
     if (flag) {
       return;
     }

@@ -36,7 +36,7 @@ const AdminPanel = () => {
       setTasks(result.data);
       console.log(result.data);
     });
-  }, []);
+  }, [projectsInfo]);
 
   return (
     <Container>
